@@ -1,7 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const xlsx = require('xlsx');
-const bcrypt = require('bcryptjs');
 const Faculty = require('./models/faculty');
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -21,13 +20,10 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true 
       return process.exit();
     }
 
-    const hashedPassword = await bcrypt.hash('default123', 10);
-
     const formattedData = facultyData.map(faculty => ({
       facultyId: faculty.facultyId?.toString().trim(),
       facultyName: faculty.facultyName?.toString().trim(),
       facultyEmail: faculty.facultyEmail?.toString().trim(),
-      password: hashedPassword,
       currentlyIssuedBooks: [],
       totalBooksIssued: 0,
       role: faculty.role?.toLowerCase() || 'faculty',
